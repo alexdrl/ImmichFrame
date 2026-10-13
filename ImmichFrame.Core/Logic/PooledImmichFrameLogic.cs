@@ -109,6 +109,11 @@ public class PooledImmichFrameLogic : IAccountImmichFrameLogic, IDisposable
     }
     private async Task<(string fileName, string ContentType, Stream fileStream)> GetImageAsset(Guid id)
     {
+        var size = ImageSizeParser.Parse(_generalSettings.ImageSize);
+        // The preview keeps the bare id, so a cache written before ImageSize existed stays valid;
+        // other sizes get a suffix, so switching sizes never serves a cached file of the old one.
+        var baseName = size == ImageSize.Preview ? id.ToString() : $"{id}_{size.ToString().ToLowerInvariant()}";
+
         if (_generalSettings.DownloadImages)
         {
             if (!Directory.Exists(_downloadLocation))
@@ -117,7 +122,7 @@ public class PooledImmichFrameLogic : IAccountImmichFrameLogic, IDisposable
             }
 
             var file = Directory.GetFiles(_downloadLocation)
-                .FirstOrDefault(x => Path.GetFileNameWithoutExtension(x) == id.ToString());
+                .FirstOrDefault(x => Path.GetFileNameWithoutExtension(x) == baseName);
 
             if (!string.IsNullOrWhiteSpace(file))
             {
@@ -125,16 +130,16 @@ public class PooledImmichFrameLogic : IAccountImmichFrameLogic, IDisposable
                 {
                     var fs = File.OpenRead(file);
 
-                    var ex = Path.GetExtension(file).TrimStart('.');
+                    var ex = Path.GetExtension(file);
 
-                    return (Path.GetFileName(file), $"image/{ex}", fs);
+                    return (Path.GetFileName(file), ImageContentTypes.FromExtension(ex), fs);
                 }
 
                 File.Delete(file);
             }
         }
 
-        var data = await _immichApi.ViewAssetAsync(null, id, string.Empty, AssetMediaSize.Preview, null);
+        var data = await FetchImage(id, size);
 
         if (data == null)
             throw new AssetNotFoundException($"Asset {id} was not found!");
@@ -145,8 +150,9 @@ public class PooledImmichFrameLogic : IAccountImmichFrameLogic, IDisposable
             contentType = data.Headers["Content-Type"].FirstOrDefault() ?? "";
         }
 
-        var ext = contentType.ToLower() == "image/webp" ? "webp" : "jpeg";
-        var fileName = $"{id}.{ext}";
+        // No Content-Type kept the old ".jpeg" name.
+        var ext = string.IsNullOrEmpty(contentType) ? "jpeg" : ImageContentTypes.ToExtension(contentType);
+        var fileName = $"{baseName}.{ext}";
 
         if (_generalSettings.DownloadImages)
         {
@@ -163,6 +169,35 @@ public class PooledImmichFrameLogic : IAccountImmichFrameLogic, IDisposable
 
         return (fileName, contentType, data.Stream);
     }
+
+    private async Task<FileResponse?> FetchImage(Guid id, ImageSize size)
+    {
+        switch (size)
+        {
+            case ImageSize.Original:
+                return await DownloadOriginal(id);
+
+            case ImageSize.Fullsize:
+                // Same choice Immich makes for size=fullsize, decided here because the client does not
+                // follow redirects: the original when a browser can show it...
+                var info = await _immichApi.GetAssetInfoAsync(id, null, null);
+                if (ImageContentTypes.IsWebSupported(info?.OriginalMimeType))
+                    return await DownloadOriginal(id);
+
+                // ...otherwise (HEIC, RAW, JXL) Immich's converted full-size file, which only exists when
+                // "Generate full-size image" is on in Immich; without it Immich redirects to the preview.
+                return await _immichApi.ViewFullsizeAssetOrNullAsync(id) ?? await ViewPreview(id);
+
+            default:
+                return await ViewPreview(id);
+        }
+    }
+
+    private Task<FileResponse> ViewPreview(Guid id) =>
+        _immichApi.ViewAssetAsync(null, id, string.Empty, AssetMediaSize.Preview, null);
+
+    private Task<FileResponse> DownloadOriginal(Guid id) =>
+        _immichApi.DownloadAssetAsync(null, id, string.Empty, null);
 
     private async Task<AssetResponse> GetVideoAsset(Guid id, string? rangeHeader = null)
     {

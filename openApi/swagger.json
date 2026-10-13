@@ -1692,6 +1692,10 @@
             "type": "string",
             "nullable": true
           },
+          "imageSize": {
+            "type": "string",
+            "nullable": true
+          },
           "renewImagesDuration": {
             "type": "integer",
             "format": "int32"
