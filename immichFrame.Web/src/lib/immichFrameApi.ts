@@ -60,6 +60,12 @@ export type GeneralSettings = {
     imageSize?: string | null;
     renewImagesDuration?: number;
     webcalendars?: string[] | null;
+    todoistApiToken?: string | null;
+    todoistProjectId?: string | null;
+    todoistShowOverdue?: boolean;
+    todoistMaxTasks?: number;
+    todoistHideWhenEmpty?: boolean;
+    todoistRefreshMinutes?: number;
     refreshAlbumPeopleInterval?: number;
     weatherApiKey?: string | null;
     unitSystem?: string | null;
@@ -322,6 +328,24 @@ export type ClientSettingsDto = {
     layout?: string | null;
     language?: string | null;
 };
+export type TodoistTask = {
+    id?: string | null;
+    content?: string | null;
+    priority?: number;
+    dueDate?: string | null;
+    dueTime?: string | null;
+    isOverdue?: boolean;
+    daysOverdue?: number;
+    isRecurring?: boolean;
+    labels?: string[] | null;
+};
+export type TodoistTasks = {
+    enabled?: boolean;
+    projectName?: string | null;
+    tasks?: TodoistTask[] | null;
+    hiddenCount?: number;
+    hideWhenEmpty?: boolean;
+};
 export type IWeather = {
     location?: string | null;
     temperature?: number;
@@ -515,6 +539,18 @@ export function getVersion(opts?: Oazapfts.RequestOpts) {
         status: 200;
         data: string;
     }>("/api/Config/Version", {
+        ...opts
+    });
+}
+export function getTodoistTasks({ clientIdentifier }: {
+    clientIdentifier?: string;
+} = {}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.fetchJson<{
+        status: 200;
+        data: TodoistTasks;
+    }>(`/api/Todoist${QS.query(QS.explode({
+        clientIdentifier
+    }))}`, {
         ...opts
     });
 }

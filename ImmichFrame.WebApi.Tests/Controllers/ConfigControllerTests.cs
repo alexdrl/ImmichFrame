@@ -59,6 +59,8 @@ namespace ImmichFrame.WebApi.Tests.Controllers
                 AuthenticationSecret = "secret-auth-token",
                 AdminPassword = "secret-admin-password",
                 Webcalendars = new List<string> { "https://calendar.example.com/secret.ics" },
+                TodoistApiToken = "secret-todoist-token",
+                TodoistProjectId = "secret-todoist-project",
                 RefreshAlbumPeopleInterval = 8,
             };
             _generalSettings = generalSettings;
@@ -140,6 +142,8 @@ namespace ImmichFrame.WebApi.Tests.Controllers
                 Assert.That(json, Does.Not.Contain("apiKey"));
                 Assert.That(json, Does.Not.Contain("webhook"));
                 Assert.That(json, Does.Not.Contain("webcalendars"));
+                Assert.That(json, Does.Not.Contain("secret-todoist"));
+                Assert.That(json, Does.Not.Contain("todoist").IgnoreCase);
             });
         }
     }

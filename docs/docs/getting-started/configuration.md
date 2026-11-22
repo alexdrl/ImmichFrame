@@ -103,6 +103,18 @@ General:
   UnitSystem: "imperial" # 'imperial' | 'metric'
   # Set the weather location with lat/lon.
   WeatherLatLong: "40.730610,-73.935242" # string
+  # Todoist API token (Todoist → Settings → Integrations → Developer). Leave empty to disable the tasks overlay.
+  TodoistApiToken: "" # string
+  # The Todoist project to show: the last part of its URL, app.todoist.com/app/project/<name>-<id>.
+  TodoistProjectId: "" # string
+  # Show tasks that are overdue, not only the tasks due today.
+  TodoistShowOverdue: true # boolean
+  # The maximum number of tasks in the overlay. The overlay shows "+N" for the others.
+  TodoistMaxTasks: 8 # int
+  # Hide the overlay when no task is due.
+  TodoistHideWhenEmpty: false # boolean
+  # How often the server reads the tasks from Todoist, in minutes.
+  TodoistRefreshMinutes: 5 # int
   # 2 digit ISO code, sets the language of the weather description.
   Language: "en" # string
   # Webhook URL to be notified e.g. http://example.com/notify
@@ -234,6 +246,15 @@ Calendar supports basic authentication using the standard URL userinfo format:
 Example:
 No Auth: `https://calendar.google.com/calendar/ical/XXXXXX/public/basic.ics`
 With Auth: `https://username:password@calendar.immichframe.dev/dav/calendars/basic.ics`
+
+### Todoist
+
+The Todoist overlay shows the tasks of one Todoist project that are due today, and the overdue tasks. It is enabled by entering an API token and a project id.
+
+- Get the API token in Todoist: _Settings → Integrations → Developer_.
+- The project id is the last part of the project URL. For `https://app.todoist.com/app/project/home-6Jf8VQXxpwv56VQ7`, the id is `6Jf8VQXxpwv56VQ7`.
+- The server reads the tasks with the Todoist API v1 and keeps them for `TodoistRefreshMinutes`. The API token stays on the server: the frame gets only the task list.
+- The overlay is read-only. It shows the priority color, the due time, the labels and, for an overdue task, how many days ago it was due, in the frame `Language`.
 
 ### Misc
 

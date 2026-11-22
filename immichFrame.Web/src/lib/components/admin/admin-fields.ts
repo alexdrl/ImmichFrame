@@ -123,6 +123,37 @@ export const generalSections: SectionDef[] = [
 		]
 	},
 	{
+		title: 'Todoist',
+		fields: [
+			{
+				key: 'todoistApiToken',
+				label: 'Todoist API token',
+				type: 'password',
+				help: 'Todoist → Settings → Integrations → Developer. Leave empty to disable the tasks overlay.'
+			},
+			{
+				key: 'todoistProjectId',
+				label: 'Todoist project id',
+				type: 'text',
+				help: 'The last part of the project URL: app.todoist.com/app/project/<name>-<id>. The overlay shows the tasks of this project that are due today or overdue.'
+			},
+			{ key: 'todoistShowOverdue', label: 'Show overdue tasks', type: 'checkbox' },
+			{ key: 'todoistMaxTasks', label: 'Max tasks shown', type: 'number', min: 1, max: 50 },
+			{
+				key: 'todoistHideWhenEmpty',
+				label: 'Hide the overlay when there are no tasks',
+				type: 'checkbox'
+			},
+			{
+				key: 'todoistRefreshMinutes',
+				label: 'Refresh from Todoist (minutes)',
+				type: 'number',
+				min: 1,
+				max: 1440
+			}
+		]
+	},
+	{
 		title: 'Server',
 		fields: [
 			{
