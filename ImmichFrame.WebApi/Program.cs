@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Reflection;
 using ImmichFrame.Core.Logic;
 using ImmichFrame.Core.Logic.AccountSelection;
+using ImmichFrame.Core.Services;
 using ImmichFrame.WebApi.Database;
 using ImmichFrame.WebApi.Helpers;
 using ImmichFrame.WebApi.Helpers.Config;
@@ -102,6 +103,11 @@ builder.Services.AddSingleton<IServerBehaviorSettings>(srv => srv.GetRequiredSer
 // Register services
 builder.Services.AddSingleton<IWeatherService, OpenWeatherMapService>();
 builder.Services.AddSingleton<ICalendarService, IcalCalendarService>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<ITodoistService, TodoistTaskService>();
+// Carries the Todoist API token: must not follow redirects to another host.
+builder.Services.AddHttpClient(TodoistTaskService.HttpClientName, client => client.Timeout = TimeSpan.FromSeconds(15))
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
 builder.Services.AddSingleton<IAssetAccountTracker, BloomFilterAssetAccountTracker>();
 builder.Services.AddSingleton<Func<IList<IAccountImmichFrameLogic>, IAccountSelectionStrategy>>(srv =>
     accounts => ActivatorUtilities.CreateInstance<TotalAccountImagesSelectionStrategy>(srv, accounts));

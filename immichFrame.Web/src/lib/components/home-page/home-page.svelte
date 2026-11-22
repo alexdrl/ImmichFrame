@@ -12,6 +12,7 @@
 	import ErrorElement from '../elements/error-element.svelte';
 	import Clock from '../elements/clock.svelte';
 	import Appointments from '../elements/appointments.svelte';
+	import TodoistTasks from '../elements/todoist-tasks.svelte';
 	import LoadingElement from '../elements/LoadingElement.svelte';
 	import { page } from '$app/state';
 	import { ProgressBarLocation, ProgressBarStatus } from '../elements/progress-bar.types';
@@ -549,6 +550,8 @@
 		{/if}
 
 		<Appointments />
+
+		<TodoistTasks />
 
 		<OverlayControls
 			next={async () => {

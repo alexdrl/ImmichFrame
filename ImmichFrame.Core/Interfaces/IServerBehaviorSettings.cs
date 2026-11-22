@@ -5,6 +5,14 @@ namespace ImmichFrame.Core.Interfaces
         public List<string> Webcalendars { get; }
         public int RefreshAlbumPeopleInterval { get; }
         public string? WeatherApiKey { get; }
+        // Todoist overlay: tasks of one project that are due today or overdue. Server-side only:
+        // the token never goes to the client.
+        public string? TodoistApiToken { get; }
+        public string? TodoistProjectId { get; }
+        public bool TodoistShowOverdue { get; }
+        public int TodoistMaxTasks { get; }
+        public bool TodoistHideWhenEmpty { get; }
+        public int TodoistRefreshMinutes { get; }
         public string? WeatherLatLong { get; }
         public string? UnitSystem { get; }
         public string? Webhook { get; }

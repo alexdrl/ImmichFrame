@@ -844,6 +844,46 @@
         }
       }
     },
+    "/api/Todoist": {
+      "get": {
+        "tags": [
+          "Todoist"
+        ],
+        "operationId": "GetTodoistTasks",
+        "parameters": [
+          {
+            "name": "clientIdentifier",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoistTasks"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoistTasks"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoistTasks"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Weather": {
       "get": {
         "tags": [
@@ -1704,6 +1744,28 @@
             },
             "nullable": true
           },
+          "todoistApiToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "todoistProjectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "todoistShowOverdue": {
+            "type": "boolean"
+          },
+          "todoistMaxTasks": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "todoistHideWhenEmpty": {
+            "type": "boolean"
+          },
+          "todoistRefreshMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
           "refreshAlbumPeopleInterval": {
             "type": "integer",
             "format": "int32"
@@ -2176,6 +2238,76 @@
               "nullable": true
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TodoistTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dueDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "dueTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "isOverdue": {
+            "type": "boolean"
+          },
+          "daysOverdue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRecurring": {
+            "type": "boolean"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TodoistTasks": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "projectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TodoistTask"
+            },
+            "nullable": true
+          },
+          "hiddenCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hideWhenEmpty": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
