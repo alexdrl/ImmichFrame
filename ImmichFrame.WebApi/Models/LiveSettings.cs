@@ -55,6 +55,7 @@ public class LiveGeneralSettings(ISettingsProvider _provider) : IGeneralSettings
     public int TodoistMaxTasks => Current.TodoistMaxTasks;
     public bool TodoistHideWhenEmpty => Current.TodoistHideWhenEmpty;
     public int TodoistRefreshMinutes => Current.TodoistRefreshMinutes;
+    public int TodoistOpacity => Current.TodoistOpacity;
     public int RefreshAlbumPeopleInterval => Current.RefreshAlbumPeopleInterval;
     public string? WeatherApiKey => Current.WeatherApiKey;
     public string? WeatherLatLong => Current.WeatherLatLong;

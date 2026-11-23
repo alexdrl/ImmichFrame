@@ -15,6 +15,8 @@ namespace ImmichFrame.Core.Interfaces
         public int TodoistMaxTasks { get; }
         public bool TodoistHideWhenEmpty { get; }
         public int TodoistRefreshMinutes { get; }
+        // Background opacity of the overlay cards, 0 (text only) to 100 (solid).
+        public int TodoistOpacity { get; }
         public string? WeatherLatLong { get; }
         public string? UnitSystem { get; }
         public string? Webhook { get; }

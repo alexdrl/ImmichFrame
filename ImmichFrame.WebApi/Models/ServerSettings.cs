@@ -72,6 +72,7 @@ public class GeneralSettings : IGeneralSettings
     public int TodoistMaxTasks { get; set; } = 8;
     public bool TodoistHideWhenEmpty { get; set; } = false;
     public int TodoistRefreshMinutes { get; set; } = 5;
+    public int TodoistOpacity { get; set; } = 90;
     public int RefreshAlbumPeopleInterval { get; set; } = 12;
     public string? WeatherApiKey { get; set; } = string.Empty;
     public string? UnitSystem { get; set; } = "imperial";

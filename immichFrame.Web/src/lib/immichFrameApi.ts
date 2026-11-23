@@ -66,6 +66,7 @@ export type GeneralSettings = {
     todoistMaxTasks?: number;
     todoistHideWhenEmpty?: boolean;
     todoistRefreshMinutes?: number;
+    todoistOpacity?: number;
     refreshAlbumPeopleInterval?: number;
     weatherApiKey?: string | null;
     unitSystem?: string | null;
@@ -345,6 +346,7 @@ export type TodoistTasks = {
     tasks?: TodoistTask[] | null;
     hiddenCount?: number;
     hideWhenEmpty?: boolean;
+    opacity?: number;
 };
 export type IWeather = {
     location?: string | null;

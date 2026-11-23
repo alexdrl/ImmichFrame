@@ -193,6 +193,7 @@ public class TodoistTaskService : ITodoistService
             Enabled = true,
             ProjectName = snapshot?.ProjectName,
             HideWhenEmpty = _settings.TodoistHideWhenEmpty,
+            Opacity = Math.Clamp(_settings.TodoistOpacity, 0, 100),
         };
         if (snapshot == null)
         {

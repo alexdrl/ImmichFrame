@@ -1770,6 +1770,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "todoistOpacity": {
+            "type": "integer",
+            "format": "int32"
+          },
           "refreshAlbumPeopleInterval": {
             "type": "integer",
             "format": "int32"
@@ -2312,6 +2316,10 @@
           },
           "hideWhenEmpty": {
             "type": "boolean"
+          },
+          "opacity": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

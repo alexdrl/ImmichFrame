@@ -18,6 +18,7 @@
     "TodoistMaxTasks": 8,
     "TodoistHideWhenEmpty": false,
     "TodoistRefreshMinutes": 5,
+    "TodoistOpacity": 90,
     "Webhook": null,
     "Language": "en",
     "Interval": 45,
