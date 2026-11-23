@@ -115,6 +115,8 @@ General:
   TodoistHideWhenEmpty: false # boolean
   # How often the server reads the tasks from Todoist, in minutes.
   TodoistRefreshMinutes: 5 # int
+  # Background opacity of the task cards in percent: 0 shows only the text, 100 a solid card.
+  TodoistOpacity: 90 # int
   # 2 digit ISO code, sets the language of the weather description.
   Language: "en" # string
   # Webhook URL to be notified e.g. http://example.com/notify

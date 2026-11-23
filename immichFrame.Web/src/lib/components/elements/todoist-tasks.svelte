@@ -18,6 +18,14 @@
 	let visible = $derived(!!todoist?.enabled && (tasks.length > 0 || !todoist.hideWhenEmpty));
 	let total = $derived(tasks.length + (todoist?.hiddenCount ?? 0));
 
+	// The same gray as the appointments cards (bg-gray-600), with the TodoistOpacity alpha. Below
+	// about half opacity the photo shows through, so the text gets a shadow to stay readable.
+	let cardStyle = $derived.by(() => {
+		const opacity = Math.min(Math.max(todoist?.opacity ?? 90, 0), 100);
+		const background = `background-color: color-mix(in oklab, var(--color-gray-600, #4b5563) ${opacity}%, transparent);`;
+		return opacity < 50 ? `${background} text-shadow: 0 1px 3px rgb(0 0 0 / 0.8);` : background;
+	});
+
 	// "yesterday" / "3 days ago" in the frame's language, from the browser, without a translation table.
 	let relativeDay = $derived.by(() => {
 		try {
@@ -61,13 +69,16 @@
 		id="todoist-tasks"
 		class="fixed top-0 left-0 w-auto z-10 text-frame-primary m-5 max-w-[25%] hidden lg:block md:min-w-[15%]"
 	>
-		<div class="bg-gray-600/90 mb-2 rounded-md px-3 py-2 flex items-center justify-between gap-3">
+		<div
+			class="mb-2 rounded-md px-3 py-2 flex items-center justify-between gap-3"
+			style={cardStyle}
+		>
 			<p class="font-semibold truncate">{todoist?.projectName ?? 'Todoist'}</p>
 			<p class="text-xs">{total}</p>
 		</div>
 
 		{#each tasks as task (task.id)}
-			<div class="bg-gray-600/90 mb-2 text-left rounded-md p-3 flex gap-3 items-start">
+			<div class="mb-2 text-left rounded-md p-3 flex gap-3 items-start" style={cardStyle}>
 				<span
 					class="mt-1 shrink-0 w-4 h-4 rounded-full border-2"
 					style={ringStyle(task.priority)}

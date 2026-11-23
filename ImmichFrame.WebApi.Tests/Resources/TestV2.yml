@@ -16,6 +16,7 @@ General:
   TodoistMaxTasks: 7
   TodoistHideWhenEmpty: true
   TodoistRefreshMinutes: 7
+  TodoistOpacity: 7
   UnitSystem: UnitSystem_TEST
   WeatherLatLong: WeatherLatLong_TEST
   Language: Language_TEST

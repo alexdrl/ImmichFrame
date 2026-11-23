@@ -150,6 +150,14 @@ export const generalSections: SectionDef[] = [
 				type: 'number',
 				min: 1,
 				max: 1440
+			},
+			{
+				key: 'todoistOpacity',
+				label: 'Card opacity (%)',
+				type: 'number',
+				min: 0,
+				max: 100,
+				help: 'Background of the task cards: 0 shows only the text over the photo, 100 a solid card.'
 			}
 		]
 	},

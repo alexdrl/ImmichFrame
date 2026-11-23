@@ -17,6 +17,9 @@ public class TodoistTasks
     public int HiddenCount { get; set; }
 
     public bool HideWhenEmpty { get; set; }
+
+    /// <summary>Background opacity of the cards in percent, 0 to 100.</summary>
+    public int Opacity { get; set; } = 90;
 }
 
 public class TodoistTask

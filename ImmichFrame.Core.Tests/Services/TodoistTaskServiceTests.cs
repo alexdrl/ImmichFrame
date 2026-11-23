@@ -266,6 +266,20 @@ public class TodoistTaskServiceTests
         Assert.That(result.ProjectName, Is.Null);
     }
 
+    [TestCase(90, 90)]
+    [TestCase(0, 0)]
+    [TestCase(-5, 0)]
+    [TestCase(150, 100)]
+    public async Task Opacity_IsPassedToTheClient_InsideZeroToHundred(int setting, int expected)
+    {
+        _settings.SetupGet(s => s.TodoistOpacity).Returns(setting);
+        var service = CreateService(Todoist(TaskJson("a", "A", "2026-11-22")));
+
+        var result = await service.GetTasks();
+
+        Assert.That(result.Opacity, Is.EqualTo(expected));
+    }
+
     [Test]
     public async Task HideWhenEmpty_IsPassedToTheClient()
     {
